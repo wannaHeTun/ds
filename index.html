@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>生地 · 融合 · 灵动轨迹</title>
+    <style>
+        /* ===== 全局 - 亮色版 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #0e121f;
+            color: #e8ecf5;
+            padding: 12px;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(ellipse at 15% 25%, rgba(200, 180, 140, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 75%, rgba(220, 200, 160, 0.06) 0%, transparent 40%),
+                linear-gradient(180deg, #0e121f 0%, #141a2a 30%, #10141e 60%, #080c16 100%);
+            background-attachment: fixed;
+            transition: background 0.8s ease;
+        }
+        body.bg-shift {
+            background-image:
+                radial-gradient(ellipse at 15% 25%, rgba(200, 150, 100, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 75%, rgba(220, 180, 130, 0.06) 0%, transparent 40%),
+                linear-gradient(180deg, #14101a 0%, #1a1428 30%, #14101e 60%, #0c0814 100%);
+        }
+        body.bg-shift2 {
+            background-image:
+                radial-gradient(ellipse at 25% 30%, rgba(180, 200, 120, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 70%, rgba(200, 190, 140, 0.05) 0%, transparent 40%),
+                linear-gradient(180deg, #0e1a12 0%, #14201a 30%, #101a14 60%, #080c0a 100%);
+        }
+        body.bg-shift3 {
+            background-image:
+                radial-gradient(ellipse at 30% 20%, rgba(200, 130, 160, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(190, 150, 210, 0.05) 0%, transparent 40%),
+                linear-gradient(180deg, #140e1a 0%, #1a1428 30%, #14101e 60%, #0c0814 100%);
+        }
+
+        .main {
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== 星星 ===== */
+        .stars-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .stars-bg .star {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            animation: twinkle var(--d, 4s) ease-in-out infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.1; transform: scale(0.8); }
+            100% { opacity: 0.5; transform: scale(1.1); }
+        }
+
+        /* ===== ★★★ 灵动岛 - 亮色 ★★★ ===== */
+        .dynamic-island {
+            position: fixed;
+            z-index: 50;
+            margin: 0;
+            max-width: 420px;
+            width: auto;
+            min-width: 120px;
+            background: rgba(20, 28, 48, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 6px 12px;
+            border: 1px solid rgba(220, 200, 180, 0.15);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), inset 0 0 40px rgba(220, 200, 180, 0.03);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+            min-height: 36px;
+            opacity: 0;
+            pointer-events: none;
+            will-change: transform, opacity;
+            transition: all 0.8s cubic-bezier(0.34, 1.2, 0.64, 1);
+            left: 50%;
+            top: 12px;
+            right: auto;
+            bottom: auto;
+            transform: translateX(-50%) scale(0.92);
+            width: auto;
+        }
+        .dynamic-island.show {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+            pointer-events: auto;
+        }
+
+        .dynamic-island.size-small {
+            min-height: 28px;
+            padding: 3px 8px;
+            border-radius: 18px;
+            min-width: 80px;
+        }
+        .dynamic-island.size-medium {
+            min-height: 32px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            min-width: 100px;
+        }
+        .dynamic-island.size-large {
+            min-height: 36px;
+            padding: 6px 12px;
+            border-radius: 24px;
+            min-width: 120px;
+        }
+
+        .dynamic-island.pos-right {
+            left: auto !important;
+            right: 12px;
+            top: 60px;
+            bottom: auto;
+            transform: scale(1) !important;
+        }
+        .dynamic-island.pos-left {
+            left: 12px !important;
+            right: auto;
+            top: 60px;
+            bottom: auto;
+            transform: scale(1) !important;
+        }
+        .dynamic-island.pos-bottom {
+            left: 50% !important;
+            right: auto;
+            top: auto;
+            bottom: 60px;
+            transform: translateX(-50%) scale(1) !important;
+        }
+
+        .dynamic-island.pos-right.size-small { transform: scale(0.7) !important; }
+        .dynamic-island.pos-right.size-medium { transform: scale(0.85) !important; }
+        .dynamic-island.pos-right.size-large { transform: scale(1) !important; }
+        .dynamic-island.pos-left.size-small { transform: scale(0.7) !important; }
+        .dynamic-island.pos-left.size-medium { transform: scale(0.85) !important; }
+        .dynamic-island.pos-left.size-large { transform: scale(1) !important; }
+        .dynamic-island.pos-bottom.size-small { transform: translateX(-50%) scale(0.7) !important; }
+        .dynamic-island.pos-bottom.size-medium { transform: translateX(-50%) scale(0.85) !important; }
+        .dynamic-island.pos-bottom.size-large { transform: translateX(-50%) scale(1) !important; }
+
+        .dynamic-island .island-content-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            gap: 4px;
+        }
+        .dynamic-island.show .island-content-wrap {
+            opacity: 1;
+        }
+        .island-left {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            min-width: 0;
+        }
+        .island-time {
+            font-size: 0.6rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            color: #e8ecf5;
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+            opacity: 0.9;
+        }
+        .island-weather {
+            font-size: 0.5rem;
+            opacity: 0.5;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            white-space: nowrap;
+        }
+        .island-center {
+            flex: 1;
+            text-align: center;
+            padding: 0 4px;
+            overflow: hidden;
+            min-width: 0;
+        }
+        .island-blessing {
+            font-size: 0.5rem;
+            opacity: 0.6;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 300;
+            color: #d4dce8;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .island-blessing.slide-out {
+            opacity: 0;
+            transform: translateY(-4px);
+        }
+        .island-blessing.slide-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .island-right {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            flex-shrink: 0;
+        }
+        .island-emoji {
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+        .island-counter {
+            font-size: 0.4rem;
+            opacity: 0.4;
+            font-variant-numeric: tabular-nums;
+            min-width: 14px;
+            text-align: center;
+            font-weight: 400;
+            color: #e8dcc0;
+            background: rgba(220, 200, 180, 0.08);
+            padding: 1px 4px;
+            border-radius: 20px;
+            border: 1px solid rgba(220, 200, 180, 0.06);
+        }
+
+        .dynamic-island.size-small .island-time { font-size: 0.5rem; }
+        .dynamic-island.size-small .island-weather { font-size: 0.4rem; }
+        .dynamic-island.size-small .island-blessing { font-size: 0.45rem; }
+        .dynamic-island.size-small .island-emoji { font-size: 0.65rem; }
+        .dynamic-island.size-small .island-counter { font-size: 0.3rem; min-width: 10px; padding: 0 3px; }
+
+        .island-particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 60;
+            animation: islandBurst 0.8s cubic-bezier(0, 0.5, 0.5, 1) forwards;
+        }
+        @keyframes islandBurst {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
+        }
+
+        /* ===== 加载 ===== */
+        .loader {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: #0e121f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            overflow: hidden;
+        }
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            position: relative;
+            z-index: 10;
+            animation: dotBounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            background: radial-gradient(circle at 35% 35%, #e8dcc0, #c8b88a);
+            box-shadow: 0 0 40px rgba(200, 180, 140, 0.2);
+        }
+        @keyframes dotBounce {
+            0% { transform: translateY(-30vh) scale(0.4); opacity:0; }
+            50% { transform: translateY(5px) scale(1.06); opacity:1; }
+            70% { transform: translateY(-2px) scale(0.97); }
+            100% { transform: translateY(0) scale(1); opacity:1; }
+        }
+        .loader-dot.expand {
+            animation: dotExpand 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        @keyframes dotExpand {
+            0% { transform: scale(1); opacity:1; }
+            60% { transform: scale(80); opacity:0.15; }
+            100% { transform: scale(80); opacity:0.02; }
+        }
+        .loader-text {
+            position: absolute;
+            bottom: 28%;
+            font-size: 0.5rem;
+            letter-spacing: 8px;
+            opacity: 0;
+            color: rgba(200, 180, 140, 0.3);
+            z-index: 10;
+            transition: opacity 0.4s ease;
+            font-weight: 300;
+        }
+        .loader-text.show { opacity:1; }
+
+        /* ===== 主内容 ===== */
+        .main-content { opacity:1; transform:translateY(0); animation:none; }
+
+        /* ===== 顶部卡片 - 亮色 ===== */
+        .card {
+            background: rgba(16, 22, 40, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 28px;
+            padding: 20px 14px 18px;
+            text-align: center;
+            border: 1px solid rgba(220, 200, 180, 0.08);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3), inset 0 0 60px rgba(220, 200, 180, 0.02);
+            margin-bottom: 16px;
+            opacity:0;
+            transform:translateY(30px);
+            animation: cardRise 1s cubic-bezier(0.22,1,0.36,1) forwards;
+            animation-delay:0.3s;
+            position:relative;
+            overflow:hidden;
+        }
+        @keyframes cardRise {
+            0% { opacity:0; transform:translateY(30px); }
+            100% { opacity:1; transform:translateY(0); }
+        }
+
+        .year-badge {
+            font-size:0.5rem;
+            letter-spacing:6px;
+            opacity:0.3;
+            font-weight:300;
+            margin-bottom:2px;
+            color:#e8dcc0;
+        }
+        .icon { font-size:2rem; display:block; animation:floatIcon 4s ease-in-out infinite; }
+        @keyframes floatIcon { 0%,100% { transform:translateY(0) scale(1); } 50% { transform:translateY(-3px) scale(1.01); } }
+        h1 {
+            font-size:1.4rem; font-weight:600; letter-spacing:3px;
+            background: linear-gradient(135deg, #f0ece0, #e8dcc0, #d4c8a8);
+            -webkit-background-clip: text; background-clip: text; color:transparent;
+            animation: shimmer 4s ease-in-out infinite;
+            background-size:300% 300%;
+        }
+        @keyframes shimmer { 0%,100% { background-position:0% 50%; } 50% { background-position:100% 50%; } }
+        .sub {
+            opacity:0.3;
+            font-size:0.55rem;
+            letter-spacing:4px;
+            font-weight:300;
+            border-bottom:1px solid rgba(220,200,180,0.06);
+            padding-bottom:8px;
+            margin-bottom:8px;
+            color:#e8dcc0;
+        }
+
+        .typewriter-wrap {
+            min-height:60px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:2px 0 6px;
+            border-bottom:1px solid rgba(220,200,180,0.06);
+            margin-bottom:8px;
+        }
+        .typewriter-text {
+            font-size:0.7rem;
+            line-height:1.8;
+            font-weight:300;
+            color:rgba(220,220,235,0.7);
+            letter-spacing:0.5px;
+            text-align:center;
+        }
+        .typewriter-text .highlight { color:#e8dcc0; opacity:1; }
+        .typewriter-text .cursor {
+            display:inline-block;
+            width:2px;
+            height:0.8em;
+            background:#e8dcc0;
+            margin-left:2px;
+            animation:blink 0.8s step-end infinite;
+            vertical-align:text-bottom;
+        }
+        @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+
+        .hero-ring-wrap {
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            padding:2px 0;
+            position:relative;
+        }
+        .hero-ring {
+            position:relative;
+            width:140px;
+            height:140px;
+        }
+        .hero-ring .ring-glow {
+            position:absolute;
+            inset:-12px;
+            border-radius:50%;
+            background:radial-gradient(circle, rgba(220,200,180,0.06), transparent 70%);
+            animation:breatheGlow 3s ease-in-out infinite alternate;
+            pointer-events:none;
+        }
+        @keyframes breatheGlow {
+            0% { transform:scale(0.9); opacity:0.4; }
+            100% { transform:scale(1.1); opacity:0.8; }
+        }
+        .hero-ring svg { transform:rotate(-90deg); position:relative; z-index:2; }
+        .hero-ring .ring-bg { fill:none; stroke:rgba(220,200,180,0.08); stroke-width:3; }
+        .hero-ring .ring-progress {
+            fill:none;
+            stroke:url(#ringGrad);
+            stroke-width:3;
+            stroke-linecap:round;
+            stroke-dasharray:392.7;
+            stroke-dashoffset:392.7;
+            transition:stroke-dashoffset 1.2s ease;
+        }
+        .hero-ring .ring-center {
+            position:absolute;
+            inset:0;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            z-index:3;
+        }
+        .hero-ring .ring-number {
+            font-size:2.4rem;
+            font-weight:600;
+            letter-spacing:3px;
+            background:linear-gradient(to right, #f0ece0, #e8dcc0);
+            -webkit-background-clip:text;
+            background-clip:text;
+            color:transparent;
+            font-variant-numeric:tabular-nums;
+            line-height:1;
+        }
+        .hero-ring .ring-number.pulsing { animation:pulseNum 0.6s ease 3; }
+        @keyframes pulseNum { 0%,100% { transform:scale(1); opacity:1; } 50% { transform:scale(1.04); opacity:0.85; } }
+        .hero-ring .ring-label { font-size:0.4rem; opacity:0.3; letter-spacing:3px; margin-top:1px; font-weight:300; color:#e8dcc0; }
+        .hero-ring .ring-sub { font-size:0.35rem; opacity:0.2; letter-spacing:1px; margin-top:0px; font-weight:300; }
+        .hero-ring .ring-fusion-label {
+            position:absolute;
+            bottom:-2px;
+            left:50%;
+            transform:translateX(-50%);
+            font-size:0.35rem;
+            opacity:0.12;
+            letter-spacing:3px;
+            white-space:nowrap;
+            font-weight:300;
+            color:#e8dcc0;
+        }
+
+        /* 底部进度条 */
+        .fusion-progress {
+            position:fixed;
+            bottom:0;
+            left:0;
+            right:0;
+            z-index:40;
+            padding:4px 16px 12px;
+            background:rgba(14, 18, 31, 0.88);
+            backdrop-filter:blur(12px);
+            -webkit-backdrop-filter:blur(12px);
+            border-top:1px solid rgba(220,200,180,0.06);
+            display:flex;
+            align-items:center;
+            gap:10px;
+            transform:translateY(100%);
+            transition:transform 0.6s ease;
+        }
+        .fusion-progress.show { transform:translateY(0); }
+        .fusion-progress .label { font-size:0.45rem; opacity:0.25; letter-spacing:2px; white-space:nowrap; font-weight:300; color:#e8dcc0; }
+        .fusion-progress .track {
+            flex:1;
+            height:2px;
+            background:rgba(220,200,180,0.06);
+            border-radius:2px;
+            overflow:hidden;
+            position:relative;
+        }
+        .fusion-progress .track .fill {
+            height:100%;
+            width:0%;
+            border-radius:2px;
+            background:linear-gradient(to right, #e8dcc0, #f0ece0, #d4c8a8);
+            transition:width 0.3s ease;
+        }
+        .fusion-progress .percent {
+            font-size:0.5rem;
+            font-weight:500;
+            min-width:28px;
+            text-align:right;
+            color:#e8dcc0;
+            letter-spacing:1px;
+            opacity:0.7;
+        }
+
+        /* ===== 板块 - 亮色 ===== */
+        .plate {
+            background:rgba(16, 22, 40, 0.45);
+            backdrop-filter:blur(12px);
+            -webkit-backdrop-filter:blur(12px);
+            border-radius:20px;
+            padding:12px 12px 14px;
+            border:1px solid rgba(220,200,180,0.06);
+            box-shadow:0 4px 24px rgba(0,0,0,0.2), inset 0 0 40px rgba(220,200,180,0.01);
+            cursor:pointer;
+            position:relative;
+            transition:transform 0.3s ease, box-shadow 0.3s ease, background 0.4s ease, border-color 0.4s ease;
+            opacity:0;
+            transform:translateY(30px);
+            overflow:hidden;
+            margin-bottom:12px;
+        }
+        .plate>* { position:relative; z-index:1; }
+        .plate.visible { opacity:1; transform:translateY(0); }
+        .plate:hover { box-shadow:0 8px 32px rgba(0,0,0,0.3), inset 0 0 60px rgba(220,200,180,0.02); transform:translateY(-2px); }
+        .plate.pressed { transform:scale(0.97) !important; transition:transform 0.12s ease; }
+
+        .plate h3 {
+            font-size:0.78rem;
+            font-weight:500;
+            margin-bottom:3px;
+            display:flex;
+            align-items:center;
+            gap:6px;
+            color:#e8ecf5;
+            opacity:0.9;
+            letter-spacing:0.5px;
+        }
+        .plate h3 .icon-sm { font-size:1rem; display:inline-block; animation:floatIcon 5s ease-in-out infinite; }
+        .plate p { font-size:0.7rem; line-height:1.6; opacity:0.6; font-weight:300; color:#d4dce8; }
+        .plate p strong { color:#e8dcc0; opacity:1; font-weight:500; }
+        .plate .tip {
+            margin-top:4px;
+            background:rgba(220,200,180,0.04);
+            border-radius:12px;
+            padding:4px 8px;
+            font-size:0.55rem;
+            color:rgba(220,200,180,0.5);
+            backdrop-filter:blur(4px);
+            border:1px solid rgba(220,200,180,0.03);
+        }
+        .click-hint {
+            font-size:0.35rem;
+            opacity:0.12;
+            text-align:center;
+            margin-top:3px;
+            letter-spacing:2px;
+            transition:opacity 0.3s;
+            color:#e8dcc0;
+        }
+        .plate:hover .click-hint { opacity:0.25; }
+        .click-hint .pulse-arrow {
+            display:inline-block;
+            animation:arrowPulse 1.8s ease-in-out infinite;
+            margin-right:2px;
+        }
+        @keyframes arrowPulse { 0%,100% { transform:translateY(0); opacity:0.3; } 50% { transform:translateY(2px); opacity:1; } }
+
+        .plate-img {
+            width:100%;
+            border-radius:10px;
+            margin-top:4px;
+            overflow:hidden;
+            position:relative;
+            background:rgba(220,200,180,0.02);
+            aspect-ratio:16/9;
+        }
+        .plate-img img {
+            width:100%; height:100%; object-fit:cover; display:block;
+            transition:opacity 0.5s ease, transform 0.4s ease;
+            filter:saturate(0.7) contrast(1.05) brightness(0.85);
+        }
+        .plate-img img.fade { opacity:0; }
+        .plate:hover .plate-img img:not(.fade) { transform:scale(1.02); }
+        .plate-img .img-label {
+            position:absolute; bottom:3px; right:4px; font-size:0.35rem; opacity:0.15;
+            background:rgba(0,0,0,0.5); padding:1px 4px; border-radius:20px; pointer-events:none; z-index:2; color:#e8dcc0;
+        }
+        .plate-img .img-counter {
+            position:absolute; bottom:3px; left:4px; font-size:0.3rem; opacity:0.08;
+            background:rgba(0,0,0,0.4); padding:1px 4px; border-radius:20px; pointer-events:none; z-index:2; color:#e8dcc0;
+        }
+
+        .plate-geo { border-left:2px solid rgba(220,200,180,0.15); }
+        .plate-geo.active { border-color:rgba(220,200,180,0.4); background:rgba(220,200,180,0.05); }
+        .plate-bio { border-left:2px solid rgba(220,200,180,0.15); }
+        .plate-bio.active { border-color:rgba(220,200,180,0.4); background:rgba(220,200,180,0.05); }
+        .plate-mountain { border-left:2px solid rgba(220,200,180,0.15); }
+        .plate-mountain.active { border-color:rgba(220,200,180,0.4); background:rgba(220,200,180,0.05); }
+        .plate-eco { border-left:2px solid rgba(220,200,180,0.15); }
+        .plate-eco.active { border-color:rgba(220,200,180,0.4); background:rgba(220,200,180,0.05); }
+        .plate-ocean { border-left:2px solid rgba(220,200,180,0.15); }
+        .plate-ocean.active { border-color:rgba(220,200,180,0.4); background:rgba(220,200,180,0.05); }
+        .plate-climate { border-left:2px solid rgba(220,200,180,0.15); }
+        .plate-climate.active { border-color:rgba(220,200,180,0.4); background:rgba(220,200,180,0.05); }
+        .plate-trivia { border-left:2px solid rgba(220,200,180,0.2); background:rgba(220,200,180,0.04); }
+        .plate-trivia.active { border-color:rgba(220,200,180,0.45); background:rgba(220,200,180,0.07); }
+        .plate-timeline { border-left:2px solid rgba(220,200,180,0.1); }
+
+        .trivia-content {
+            min-height:48px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            text-align:center;
+            font-size:0.7rem;
+            line-height:1.6;
+            opacity:0.75;
+            padding:2px 0;
+            font-weight:300;
+            color:#d4dce8;
+            transition:opacity 0.4s ease, transform 0.4s ease;
+        }
+        .trivia-content.fade-out { opacity:0; transform:translateY(-6px); }
+        .trivia-content.fade-in { opacity:1; transform:translateY(0); }
+        .trivia-refresh {
+            font-size:0.45rem;
+            opacity:0.15;
+            text-align:center;
+            margin-top:1px;
+            letter-spacing:2px;
+            cursor:pointer;
+            transition:opacity 0.3s;
+            color:#e8dcc0;
+        }
+        .trivia-refresh:hover { opacity:0.35; }
+
+        .plate-timeline .timeline-wrap {
+            position:relative;
+            padding-left:22px;
+            margin:2px 0;
+        }
+        .plate-timeline .timeline-wrap::before {
+            content:'';
+            position:absolute;
+            left:6px;
+            top:2px;
+            bottom:2px;
+            width:1px;
+            background:linear-gradient(to bottom, rgba(220,200,180,0.1), rgba(220,200,180,0.02));
+            border-radius:2px;
+        }
+        .plate-timeline .timeline-item {
+            position:relative;
+            padding:2px 0 2px 10px;
+            opacity:0;
+            transform:translateX(-8px);
+            transition:all 0.5s ease;
+        }
+        .plate-timeline .timeline-item.show { opacity:1; transform:translateX(0); }
+        .plate-timeline .timeline-item::before {
+            content:'';
+            position:absolute;
+            left:-6px;
+            top:8px;
+            width:5px;
+            height:5px;
+            border-radius:50%;
+            background:rgba(220,200,180,0.1);
+            border:1px solid rgba(220,200,180,0.04);
+            transition:all 0.5s ease;
+        }
+        .plate-timeline .timeline-item.active::before {
+            background:#e8dcc0;
+            box-shadow:0 0 16px rgba(220,200,180,0.15);
+        }
+        .plate-timeline .timeline-item .tl-label { font-size:0.4rem; opacity:0.25; letter-spacing:2px; color:#e8dcc0; }
+        .plate-timeline .timeline-item .tl-title { font-size:0.65rem; font-weight:400; margin-top:0px; opacity:0.8; color:#e8ecf5; }
+        .plate-timeline .timeline-item .tl-desc { font-size:0.5rem; opacity:0.3; margin-top:0px; font-weight:300; color:#d4dce8; }
+
+        .gene-grid {
+            display:flex;
+            justify-content:center;
+            gap:4px;
+            margin-top:3px;
+            flex-wrap:wrap;
+        }
+        .gene-tag {
+            background:rgba(220,200,180,0.04);
+            padding:1px 8px;
+            border-radius:30px;
+            font-size:0.5rem;
+            border:1px solid rgba(220,200,180,0.05);
+            color:rgba(220,200,180,0.5);
+            transition:all 0.3s ease;
+            cursor:default;
+            font-weight:300;
+        }
+        .gene-tag:hover { background:rgba(220,200,180,0.08); transform:scale(1.04); }
+
+        .eco-grid {
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:3px;
+            margin-top:3px;
+        }
+        .eco-item {
+            background:rgba(220,200,180,0.02);
+            border-radius:8px;
+            padding:4px 3px;
+            text-align:center;
+            font-size:0.5rem;
+            color:rgba(220,200,180,0.45);
+            transition:all 0.3s ease;
+            cursor:default;
+            font-weight:300;
+        }
+        .eco-item:hover { background:rgba(220,200,180,0.05); transform:scale(1.02); }
+        .eco-item .emoji { font-size:0.9rem; display:block; margin-bottom:0px; }
+
+        /* ===== 弹出层 - 亮色 ===== */
+        .popup {
+            position:fixed;
+            inset:0;
+            z-index:100;
+            background:rgba(10, 14, 26, 0.92);
+            backdrop-filter:blur(30px);
+            -webkit-backdrop-filter:blur(30px);
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            opacity:0;
+            pointer-events:none;
+            transition:opacity 0.4s ease, transform 0.4s ease;
+            transform:scale(0.97);
+        }
+        .popup.show { opacity:1; pointer-events:auto; transform:scale(1); }
+        .popup-content { text-align:center; max-width:480px; padding:20px 16px; width:90%; max-height:90vh; overflow-y:auto; }
+        .popup-content .popup-title { font-size:1.4rem; margin-bottom:8px; letter-spacing:2px; opacity:0.7; color:#e8dcc0; }
+        .popup-content .popup-desc { font-size:0.8rem; opacity:0.5; line-height:1.7; margin-bottom:12px; font-weight:300; color:#d4dce8; }
+        .popup-close {
+            margin-top:12px;
+            padding:6px 28px;
+            border-radius:40px;
+            border:1px solid rgba(220,200,180,0.08);
+            background:transparent;
+            color:#e8ecf5;
+            font-size:0.65rem;
+            cursor:pointer;
+            transition:all 0.3s ease;
+            letter-spacing:2px;
+            font-weight:300;
+        }
+        .popup-close:hover { background:rgba(220,200,180,0.06); border-color:rgba(220,200,180,0.12); }
+
+        .quiz-options {
+            display:flex;
+            flex-direction:column;
+            gap:6px;
+            margin:10px 0;
+        }
+        .quiz-option {
+            padding:8px 14px;
+            border-radius:14px;
+            border:1px solid rgba(220,200,180,0.06);
+            background:rgba(220,200,180,0.03);
+            color:#e8ecf5;
+            font-size:0.75rem;
+            cursor:pointer;
+            transition:all 0.3s ease;
+            font-weight:300;
+        }
+        .quiz-option:hover { background:rgba(220,200,180,0.06); border-color:rgba(220,200,180,0.1); }
+        .quiz-option.correct { border-color:#8a9a7a; background:rgba(138,154,122,0.1); }
+        .quiz-option.wrong { border-color:#9a7a7a; background:rgba(154,122,122,0.1); }
+        .quiz-option.disabled { pointer-events:none; opacity:0.4; }
+        .quiz-result { font-size:0.8rem; margin-top:6px; opacity:0.5; font-weight:300; color:#d4dce8; }
+        .quiz-result .celebrate { font-size:1.8rem; display:block; margin:2px 0; }
+
+        .dna-container {
+            position:relative;
+            width:140px;
+            height:180px;
+            margin:0 auto 6px;
+        }
+        .dna-container .dot {
+            position:absolute;
+            width:5px;
+            height:5px;
+            border-radius:50%;
+            background:rgba(220,200,180,0.35);
+            box-shadow:0 0 12px rgba(220,200,180,0.08);
+            animation:dnaSpin 4s linear infinite;
+        }
+        @keyframes dnaSpin { to { transform:rotate(360deg); } }
+
+        #earth {
+            width:120px; height:120px; border-radius:50%; margin:0 auto 8px;
+            background:radial-gradient(circle at 30% 30%, rgba(220,200,180,0.35), rgba(16,22,40,0.7) 70%);
+            box-shadow:0 0 40px rgba(220,200,180,0.05), inset 0 -12px 40px rgba(0,0,0,0.2);
+            animation:earthSpin 10s linear infinite;
+            position:relative;
+            overflow:hidden;
+            border:1px solid rgba(220,200,180,0.05);
+        }
+        #earth::after {
+            content:"";
+            position:absolute;
+            inset:0;
+            background:linear-gradient(90deg, transparent 40%, rgba(220,200,180,0.04) 50%, transparent 60%);
+            animation:earthShine 4s ease-in-out infinite;
+        }
+        @keyframes earthSpin { to { transform:rotate(360deg); } }
+        @keyframes earthShine { 0%,100% { transform:translateX(-100%); } 50% { transform:translateX(100%); } }
+
+        .mountain-svg { width:100%; max-width:240px; margin:0 auto 6px; }
+        .mountain-svg path {
+            fill:none;
+            stroke:rgba(220,200,180,0.35);
+            stroke-width:1.2;
+            opacity:0.7;
+            animation:contourDraw 2s ease forwards;
+        }
+        @keyframes contourDraw { 0% { stroke-dashoffset:1000; stroke-dasharray:1000; } 100% { stroke-dashoffset:0; stroke-dasharray:1000; } }
+
+        .eco-svg { width:100%; max-width:240px; margin:0 auto 6px; }
+        .eco-svg circle, .eco-svg rect { animation:ecoPulse 3s ease-in-out infinite; }
+        @keyframes ecoPulse { 0%,100% { opacity:0.5; } 50% { opacity:0.8; } }
+
+        .footer {
+            text-align:center;
+            font-size:0.35rem;
+            opacity:0.06;
+            letter-spacing:4px;
+            padding-top:10px;
+            border-top:1px solid rgba(220,200,180,0.02);
+            margin-top:6px;
+            color:#e8dcc0;
+            opacity:0;
+            animation:footerRise 0.8s ease forwards;
+            animation-delay:2s;
+        }
+        @keyframes footerRise { 0% { opacity:0; transform:translateY(12px); } 100% { opacity:0.06; transform:translateY(0); } }
+
+        @media(max-width:480px) {
+            body { padding:10px; }
+            .dynamic-island { padding:4px 10px; min-height:30px; min-width:90px; border-radius:20px; top:8px; }
+            .dynamic-island.size-small { min-height:24px; padding:2px 6px; min-width:60px; border-radius:14px; }
+            .dynamic-island.size-medium { min-height:26px; padding:3px 8px; min-width:80px; border-radius:16px; }
+            .dynamic-island.size-large { min-height:30px; padding:4px 10px; min-width:90px; border-radius:20px; }
+            .dynamic-island.pos-right { right:8px; top:50px; }
+            .dynamic-island.pos-left { left:8px; top:50px; }
+            .dynamic-island.pos-bottom { bottom:50px; }
+            .island-time { font-size:0.5rem; }
+            .island-weather { font-size:0.45rem; }
+            .island-blessing { font-size:0.45rem; }
+            .island-emoji { font-size:0.65rem; }
+            .island-counter { font-size:0.35rem; min-width:10px; padding:0 3px; }
+            .dynamic-island.size-small .island-time { font-size:0.4rem; }
+            .dynamic-island.size-small .island-weather { font-size:0.35rem; }
+            .dynamic-island.size-small .island-blessing { font-size:0.35rem; }
+            .dynamic-island.size-small .island-emoji { font-size:0.5rem; }
+            .card { padding:16px 12px 14px; border-radius:24px; }
+            .hero-ring { width:120px; height:120px; }
+            .hero-ring .ring-number { font-size:2rem; }
+            .hero-ring .ring-label { font-size:0.35rem; }
+            .icon { font-size:1.6rem; }
+            h1 { font-size:1.2rem; }
+            .plate { padding:10px 10px 12px; border-radius:16px; margin-bottom:10px; }
+            .plate h3 { font-size:0.7rem; }
+            .plate p { font-size:0.65rem; }
+            .loader-dot { width:16px; height:16px; }
+            .popup-content { padding:14px 12px; }
+            .popup-content .popup-title { font-size:1.2rem; }
+            .mountain-svg, .eco-svg { max-width:180px; }
+            .dna-container { width:100px; height:140px; }
+            #earth { width:100px; height:100px; }
+            .plate-img .img-counter { display:none; }
+            .fusion-progress { padding:3px 12px 10px; }
+            .fusion-progress .label { font-size:0.4rem; }
+            .fusion-progress .percent { font-size:0.45rem; min-width:24px; }
+            .typewriter-text { font-size:0.65rem; }
+            .plate-timeline .timeline-item .tl-title { font-size:0.6rem; }
+            .plate-timeline .timeline-item .tl-desc { font-size:0.45rem; }
+            .trivia-content { font-size:0.65rem; min-height:40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== 星星 ===== -->
+    <div class="stars-bg" id="starsBg"></div>
+
+    <!-- ===== 加载 ===== -->
+    <div class="loader" id="loader">
+        <div class="loader-dot" id="loaderDot"></div>
+        <div class="loader-text" id="loaderText">✦ 初 始 化 ✦</div>
+    </div>
+
+    <!-- ===== ★★★ 灵动岛 ★★★ ===== -->
+    <div class="dynamic-island" id="dynamicIsland">
+        <div class="island-content-wrap">
+            <div class="island-left">
+                <span class="island-time" id="islandTime">00:00:00</span>
+                <span class="island-weather" id="islandWeather">🌤️ <span class="temp">22°</span></span>
+            </div>
+            <div class="island-center">
+                <span class="island-blessing slide-in" id="islandBlessing">✦ 愿你今日明朗 ✦</span>
+            </div>
+            <div class="island-right">
+                <span class="island-emoji" id="islandEmoji">🌱</span>
+                <span class="island-counter" id="clickCounter">0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 弹出层 ===== -->
+    <div class="popup" id="bioPopup">
+        <div class="popup-content">
+            <div class="popup-title">🧬 遗传密码</div>
+            <div class="dna-container" id="dnaContainer"></div>
+            <div class="popup-desc">芝麻粒色由一对等位基因控制<br>遵循孟德尔分离定律<br><span style="opacity:0.35;font-size:0.65rem;">BB × bb → F₁: Bb → F₂: 3:1</span></div>
+            <button class="popup-close" id="bioClose">关 闭</button>
+        </div>
+    </div>
+
+    <div class="popup" id="geoPopup">
+        <div class="popup-content">
+            <div class="popup-title">🌍 无极昼</div>
+            <div id="earth"></div>
+            <div class="popup-desc">乔治王岛 · 南纬 62°<br><strong>不在南极圈内</strong>（66.5°S）<br><span style="opacity:0.35;">因此不存在真正的极昼现象</span></div>
+            <button class="popup-close" id="geoClose">关 闭</button>
+        </div>
+    </div>
+
+    <div class="popup" id="mountainPopup">
+        <div class="popup-content">
+            <div class="popup-title">⛰️ 等高线 · 地形</div>
+            <svg class="mountain-svg" viewBox="0 0 300 200">
+                <path d="M30 180 Q80 140 100 100 Q120 60 150 40 Q180 60 200 100 Q220 140 270 180" stroke="rgba(220,200,180,0.35)" stroke-width="1.2" fill="none"/>
+                <path d="M20 190 Q70 150 95 110 Q115 70 150 50 Q185 70 205 110 Q230 150 280 190" stroke="rgba(220,200,180,0.25)" stroke-width="1.2" fill="none"/>
+                <path d="M10 200 Q60 160 90 120 Q110 80 150 60 Q190 80 210 120 Q240 160 290 200" stroke="rgba(220,200,180,0.15)" stroke-width="1.2" fill="none"/>
+                <text x="150" y="220" text-anchor="middle" fill="rgba(220,200,180,0.15)" font-size="8">等高线 · 山峰</text>
+                <text x="150" y="35" text-anchor="middle" fill="rgba(220,200,180,0.35)" font-size="7">▲ 海拔 8848m</text>
+                <text x="230" y="120" text-anchor="middle" fill="rgba(220,200,180,0.1)" font-size="6">5000m</text>
+                <text x="250" y="155" text-anchor="middle" fill="rgba(220,200,180,0.07)" font-size="6">3000m</text>
+                <text x="260" y="185" text-anchor="middle" fill="rgba(220,200,180,0.04)" font-size="6">1000m</text>
+            </svg>
+            <div class="popup-desc">等高线是地形图上高程相等的各点所连成的闭合曲线<br>山峰处等高线闭合，越靠近中心海拔越高</div>
+            <button class="popup-close" id="mountainClose">关 闭</button>
+        </div>
+    </div>
+
+    <div class="popup" id="ecoPopup">
+        <div class="popup-content">
+            <div class="popup-title">🌿 生态系统 · 环境</div>
+            <svg class="eco-svg" viewBox="0 0 300 180">
+                <circle cx="260" cy="30" r="20" fill="rgba(220,200,180,0.08)" stroke="rgba(220,200,180,0.06)" stroke-width="1"/>
+                <circle cx="260" cy="30" r="14" fill="rgba(220,200,180,0.06)"/>
+                <rect x="60" y="100" width="6" height="30" fill="rgba(220,200,180,0.08)" rx="2"/>
+                <circle cx="63" cy="90" r="18" fill="rgba(220,200,180,0.06)"/>
+                <rect x="100" y="110" width="5" height="25" fill="rgba(220,200,180,0.08)" rx="2"/>
+                <circle cx="102" cy="100" r="14" fill="rgba(220,200,180,0.06)"/>
+                <rect x="140" y="105" width="5" height="28" fill="rgba(220,200,180,0.08)" rx="2"/>
+                <circle cx="142" cy="95" r="15" fill="rgba(220,200,180,0.06)"/>
+                <rect x="30" y="140" width="240" height="30" fill="rgba(220,200,180,0.04)" rx="4"/>
+                <rect x="30" y="145" width="240" height="25" fill="rgba(220,200,180,0.02)" rx="4"/>
+                <path d="M30 130 Q80 120 150 130 Q220 140 270 125" stroke="rgba(220,200,180,0.06)" stroke-width="3" fill="none"/>
+                <text x="150" y="170" text-anchor="middle" fill="rgba(220,200,180,0.1)" font-size="8">生物多样性 · 环境平衡</text>
+            </svg>
+            <div class="popup-desc">生态系统是生物与环境构成的统一整体<br>物质循环 · 能量流动 · 信息传递</div>
+            <button class="popup-close" id="ecoClose">关 闭</button>
+        </div>
+    </div>
+
+    <div class="popup" id="oceanPopup">
+        <div class="popup-content">
+            <div class="popup-title">🌊 海洋 · 蓝色星球</div>
+            <svg viewBox="0 0 300 200" style="width:100%;max-width:240px;margin:0 auto 6px;display:block;">
+                <rect x="0" y="80" width="300" height="120" fill="rgba(220,200,180,0.04)" rx="20"/>
+                <path d="M0 120 Q40 100 80 120 Q120 140 160 120 Q200 100 240 120 Q280 140 300 120 L300 200 L0 200 Z" fill="rgba(220,200,180,0.08)"/>
+                <path d="M0 140 Q50 120 100 140 Q150 160 200 140 Q250 120 300 140 L300 200 L0 200 Z" fill="rgba(220,200,180,0.05)"/>
+                <circle cx="60" cy="100" r="8" fill="rgba(220,200,180,0.05)"/>
+                <circle cx="180" cy="90" r="6" fill="rgba(220,200,180,0.04)"/>
+                <circle cx="240" cy="110" r="10" fill="rgba(220,200,180,0.03)"/>
+                <text x="150" y="190" text-anchor="middle" fill="rgba(220,200,180,0.1)" font-size="8">海洋 · 生命的摇篮</text>
+            </svg>
+            <div class="popup-desc">海洋覆盖地球 71% 的面积<br>蕴含 97% 的水资源<br><span style="opacity:0.35;">—— 蓝色星球的命脉</span></div>
+            <button class="popup-close" id="oceanClose">关 闭</button>
+        </div>
+    </div>
+
+    <div class="popup" id="climatePopup">
+        <div class="popup-content">
+            <div class="popup-title">🌤️ 气候 · 地球之肺</div>
+            <svg viewBox="0 0 300 200" style="width:100%;max-width:240px;margin:0 auto 6px;display:block;">
+                <circle cx="150" cy="90" r="40" fill="rgba(220,200,180,0.04)" stroke="rgba(220,200,180,0.05)" stroke-width="1"/>
+                <circle cx="150" cy="90" r="28" fill="rgba(220,200,180,0.03)"/>
+                <circle cx="150" cy="90" r="16" fill="rgba(220,200,180,0.02)"/>
+                <path d="M80 130 Q110 110 150 130 Q190 150 220 130" stroke="rgba(220,200,180,0.05)" stroke-width="2" fill="none"/>
+                <path d="M70 150 Q110 130 150 150 Q190 170 230 150" stroke="rgba(220,200,180,0.03)" stroke-width="2" fill="none"/>
+                <text x="150" y="190" text-anchor="middle" fill="rgba(220,200,180,0.1)" font-size="8">气候 · 动态平衡</text>
+            </svg>
+            <div class="popup-desc">气候系统是地球最复杂的系统之一<br>大气圈 · 水圈 · 冰冻圈 · 生物圈 · 岩石圈<br><span style="opacity:0.35;">—— 五大圈层相互作用</span></div>
+            <button class="popup-close" id="climateClose">关 闭</button>
+        </div>
+    </div>
+
+    <!-- ===== 测验 ===== -->
+    <div class="popup" id="quizPopup">
+        <div class="popup-content">
+            <div class="popup-title">🧠 小测验</div>
+            <div id="quizContent">
+                <p class="popup-desc" id="quizQuestion">加载中...</p>
+                <div class="quiz-options" id="quizOptions"></div>
+                <div class="quiz-result" id="quizResult"></div>
+            </div>
+            <button class="popup-close" id="quizClose">关 闭</button>
+        </div>
+    </div>
+
+    <!-- ===== 主内容 ===== -->
+    <div class="main main-content">
+
+        <div class="card">
+            <div class="year-badge">✦ M M X X V I ✦</div>
+            <span class="icon">🌱🧬</span>
+            <h1>生地 · 融合</h1>
+            <div class="sub">C O D E X · 后 记</div>
+
+            <div class="typewriter-wrap">
+                <div class="typewriter-text" id="typewriterText">
+                    <span class="cursor"></span>
+                </div>
+            </div>
+
+            <div class="hero-ring-wrap">
+                <div class="hero-ring">
+                    <div class="ring-glow"></div>
+                    <svg width="140" height="140" viewBox="0 0 140 140">
+                        <defs>
+                            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#e8dcc0"/>
+                                <stop offset="50%" stop-color="#f0ece0"/>
+                                <stop offset="100%" stop-color="#d4c8a8"/>
+                            </linearGradient>
+                        </defs>
+                        <circle class="ring-bg" cx="70" cy="70" r="62.5"/>
+                        <circle class="ring-progress" id="heroRingProgress" cx="70" cy="70" r="62.5"/>
+                    </svg>
+                    <div class="ring-center">
+                        <span class="ring-number" id="heroTimer">0.00</span>
+                        <span class="ring-label">天</span>
+                        <span class="ring-sub">自 2026.06.23</span>
+                    </div>
+                    <span class="ring-fusion-label">✦ 融 合 进 度 ✦</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 板块 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+            <div class="plate plate-geo" id="geoPlate" style="margin-bottom:0;">
+                <h3><span class="icon-sm">🧊</span> 无极昼</h3>
+                <p>乔治王岛 · 南纬 62°<br><strong>不在南极圈内</strong></p>
+                <div class="plate-img" id="geoImg">
+                    <img src="https://picsum.photos/seed/antarctica1/400/225" alt="南极" loading="lazy">
+                    <span class="img-label">📷</span>
+                    <span class="img-counter" id="geoCounter">1/10</span>
+                </div>
+                <div class="click-hint"><span class="pulse-arrow">✦</span> 地球</div>
+            </div>
+            <div class="plate plate-bio" id="bioPlate" style="margin-bottom:0;">
+                <h3><span class="icon-sm">🧬</span> 孟德尔</h3>
+                <p>芝麻粒色 · <strong>分离定律</strong><br>BB × bb → F₁:Bb → 3:1</p>
+                <div class="plate-img" id="bioImg">
+                    <img src="https://picsum.photos/seed/genetics1/400/225" alt="基因" loading="lazy">
+                    <span class="img-label">🧬</span>
+                    <span class="img-counter" id="bioCounter">1/10</span>
+                </div>
+                <div class="click-hint"><span class="pulse-arrow">✦</span> DNA</div>
+            </div>
+        </div>
+
+        <div class="plate plate-mountain" id="mountainPlate">
+            <h3><span class="icon-sm">⛰️</span> 等高线 · 地形</h3>
+            <p>等高线越密 → 坡度越陡 &nbsp;|&nbsp; 越疏 → 坡度越缓</p>
+            <div class="plate-img" id="mountainImg">
+                <img src="https://picsum.photos/seed/mountain1/400/225" alt="地形" loading="lazy">
+                <span class="img-label">⛰️</span>
+                <span class="img-counter" id="mountainCounter">1/10</span>
+            </div>
+            <div class="click-hint"><span class="pulse-arrow">✦</span> 等高线</div>
+        </div>
+
+        <div class="plate plate-eco" id="ecoPlate">
+            <h3><span class="icon-sm">🌿</span> 生态系统</h3>
+            <p>物质循环 · 能量流动 · 信息传递</p>
+            <div class="eco-grid">
+                <div class="eco-item"><span class="emoji">🌳</span>森林</div>
+                <div class="eco-item"><span class="emoji">🌊</span>海洋</div>
+                <div class="eco-item"><span class="emoji">🏜️</span>荒漠</div>
+                <div class="eco-item"><span class="emoji">❄️</span>极地</div>
+            </div>
+            <div class="plate-img" id="ecoImg">
+                <img src="https://picsum.photos/seed/ecosystem1/400/225" alt="生态" loading="lazy">
+                <span class="img-label">🌍</span>
+                <span class="img-counter" id="ecoCounter">1/10</span>
+            </div>
+            <div class="click-hint"><span class="pulse-arrow">✦</span> 生态</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+            <div class="plate plate-ocean" id="oceanPlate" style="margin-bottom:0;">
+                <h3><span class="icon-sm">🌊</span> 海洋</h3>
+                <p>覆盖 <strong>71%</strong> 地球表面</p>
+                <div class="plate-img" id="oceanImg">
+                    <img src="https://picsum.photos/seed/ocean1/400/225" alt="海洋" loading="lazy">
+                    <span class="img-label">🌊</span>
+                    <span class="img-counter" id="oceanCounter">1/10</span>
+                </div>
+                <div class="click-hint"><span class="pulse-arrow">✦</span> 海洋</div>
+            </div>
+            <div class="plate plate-climate" id="climatePlate" style="margin-bottom:0;">
+                <h3><span class="icon-sm">🌤️</span> 气候</h3>
+                <p><strong>五大圈层</strong>相互作用</p>
+                <div class="plate-img" id="climateImg">
+                    <img src="https://picsum.photos/seed/climate1/400/225" alt="气候" loading="lazy">
+                    <span class="img-label">🌤️</span>
+                    <span class="img-counter" id="climateCounter">1/10</span>
+                </div>
+                <div class="click-hint"><span class="pulse-arrow">✦</span> 气候</div>
+            </div>
+        </div>
+
+        <div class="plate plate-timeline" id="timelinePlate">
+            <h3><span class="icon-sm">📜</span> 时间轴</h3>
+            <div class="timeline-wrap" id="timelineWrap">
+                <div class="timeline-item" data-index="0">
+                    <div class="tl-label">2026.06.23 5:30</div>
+                    <div class="tl-title">✦ 会考 · 启程</div>
+                    <div class="tl-desc">笔尖与试卷的第一次触碰</div>
+                </div>
+                <div class="timeline-item" data-index="1">
+                    <div class="tl-label">2026.07.01</div>
+                    <div class="tl-title">✦ 出分日</div>
+                    <div class="tl-desc">等待，然后看见光</div>
+                </div>
+                <div class="timeline-item" data-index="2">
+                    <div class="tl-label">现在</div>
+                    <div class="tl-title">✦ 正在生长</div>
+                    <div class="tl-desc">知识在融合，我们在前行</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="plate plate-trivia" id="triviaPlate">
+            <h3><span class="icon-sm">✨</span> 冷知识</h3>
+            <div class="trivia-content" id="triviaContent">点击刷新或轻触切换</div>
+            <div class="trivia-refresh" id="triviaRefresh">⟳ 换一条</div>
+            <div class="click-hint"><span class="pulse-arrow">✦</span> 查看详情</div>
+        </div>
+
+        <div class="footer">✦ 山 海 可 平 · 遗 传 之 妙 ✦</div>
+    </div>
+
+    <!-- ===== 底部进度 ===== -->
+    <div class="fusion-progress" id="fusionProgress">
+        <span class="label">✦ 融合</span>
+        <div class="track"><div class="fill" id="fusionFill"></div></div>
+        <span class="percent" id="fusionPercent">0%</span>
+    </div>
+
+    <script>
+        (function() {
+            "use strict";
+
+            // ============================================================
+            // 1. 星星
+            // ============================================================
+            const starsBg = document.getElementById('starsBg');
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = 0.5 + Math.random() * 1.5;
+                star.style.cssText =
+                    `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${3+Math.random()*4}s;animation-delay:${Math.random()*4}s;opacity:${0.08+Math.random()*0.2};`;
+                starsBg.appendChild(star);
+            }
+
+            // ============================================================
+            // 2. 加载
+            // ============================================================
+            const loader = document.getElementById('loader');
+            const dot = document.getElementById('loaderDot');
+            setTimeout(() => { dot.classList.add('expand');
+                document.getElementById('loaderText').classList.add('show'); }, 500);
+            setTimeout(() => loader.classList.add('hidden'), 1400);
+
+            // ============================================================
+            // 3. 打字机
+            // ============================================================
+            const typewriterText = document.getElementById('typewriterText');
+            const fullText = '从晨光熹微到星月交辉，<br>经纬与细胞曾是我们共同的坐标。<br><span class="highlight">今天，合上笔盖的那一刻，</span><br><span class="highlight">有战士收刀入鞘的骄傲。</span>';
+            let charIndex = 0;
+
+            function typeNext() {
+                if (charIndex < fullText.length) {
+                    const currentChar = fullText[charIndex];
+                    if (currentChar === '<') {
+                        const endTag = fullText.indexOf('>', charIndex);
+                        typewriterText.innerHTML = fullText.substring(0, endTag + 1) + '<span class="cursor"></span>';
+                        charIndex = endTag + 1;
+                    } else {
+                        typewriterText.innerHTML = fullText.substring(0, charIndex + 1) + '<span class="cursor"></span>';
+                        charIndex++;
+                    }
+                    setTimeout(typeNext, 25 + Math.random() * 15);
+                } else {
+                    typewriterText.innerHTML = fullText + '<span class="cursor"></span>';
+                }
+            }
+            setTimeout(typeNext, 300);
+
+            // ============================================================
+            // 4. 大环形计时器
+            // ============================================================
+            const START = new Date(2026, 5, 23, 5, 30);
+            const heroTimer = document.getElementById('heroTimer');
+            const heroRing = document.getElementById('heroRingProgress');
+            const circumference = 392.7;
+
+            function getVal() { const d = (Date.now() - START) / 86400000; return d < 0 ? 0 : d; }
+            const target = getVal();
+            let animStart = null;
+
+            function animHero(ts) {
+                if (!animStart) animStart = ts;
+                const p = Math.min((ts - animStart) / 2400, 1),
+                    eased = 1 - Math.pow(1 - p, 3),
+                    val = eased * target;
+                heroTimer.textContent = val.toFixed(2);
+                const offset = circumference - (val / 10) * circumference;
+                heroRing.style.strokeDashoffset = offset;
+                heroTimer.classList.toggle('pulsing', p > 0.7 && p < 0.95);
+                if (p < 1) requestAnimationFrame(animHero);
+                else {
+                    heroTimer.textContent = target.toFixed(2);
+                    heroRing.style.strokeDashoffset = circumference - (target / 10) * circumference;
+                    heroTimer.classList.remove('pulsing');
+                    startNormalHero();
+                }
+            }
+
+            let normalHero = false;
+
+            function startNormalHero() {
+                if (normalHero) return;
+                normalHero = true;
+                (function loop() {
+                    const v = getVal();
+                    heroTimer.textContent = v.toFixed(2);
+                    const offset2 = circumference - (v / 10) * circumference;
+                    heroRing.style.strokeDashoffset = offset2;
+                    requestAnimationFrame(loop);
+                })();
+            }
+            target < 0.001 ? (heroTimer.textContent = '0.00', heroRing.style.strokeDashoffset = circumference,
+                startNormalHero()) : requestAnimationFrame(animHero);
+
+            // ============================================================
+            // 5. ★★★ 灵动岛 ★★★
+            // ============================================================
+            const island = document.getElementById('dynamicIsland');
+            const islandTime = document.getElementById('islandTime');
+            const islandWeather = document.getElementById('islandWeather');
+            const islandBlessing = document.getElementById('islandBlessing');
+            const islandEmoji = document.getElementById('islandEmoji');
+            const clickCounter = document.getElementById('clickCounter');
+            let clickCount = 0;
+            let prevFusion = -1;
+
+            function getFusionPercent() {
+                const pct = document.getElementById('fusionPercent');
+                return parseInt(pct.textContent) || 0;
+            }
+
+            function updateIslandPosition() {
+                const fusion = getFusionPercent();
+                if (fusion === prevFusion) return;
+                prevFusion = fusion;
+
+                island.classList.remove('pos-right', 'pos-left', 'pos-bottom', 'size-small', 'size-medium', 'size-large');
+
+                if (fusion >= 30 && fusion < 35) {
+                    island.classList.add('pos-right', 'size-small');
+                } else if (fusion >= 35 && fusion < 60) {
+                    island.classList.add('pos-left', 'size-medium');
+                } else if (fusion >= 60) {
+                    island.classList.add('pos-bottom', 'size-large');
+                } else {
+                    island.classList.add('size-large');
+                }
+
+                if (island.classList.contains('pos-right')) {
+                    island.style.left = 'auto';
+                    island.style.right = '12px';
+                    island.style.top = '60px';
+                    island.style.bottom = 'auto';
+                    island.style.transform = 'none';
+                } else if (island.classList.contains('pos-left')) {
+                    island.style.left = '12px';
+                    island.style.right = 'auto';
+                    island.style.top = '60px';
+                    island.style.bottom = 'auto';
+                    island.style.transform = 'none';
+                } else if (island.classList.contains('pos-bottom')) {
+                    island.style.left = '50%';
+                    island.style.right = 'auto';
+                    island.style.top = 'auto';
+                    island.style.bottom = '60px';
+                    island.style.transform = 'translateX(-50%) scale(1)';
+                } else {
+                    island.style.left = '50%';
+                    island.style.right = 'auto';
+                    island.style.top = '12px';
+                    island.style.bottom = 'auto';
+                    island.style.transform = 'translateX(-50%) scale(1)';
+                }
+
+                if (island.classList.contains('pos-right') && island.classList.contains('size-small')) {
+                    island.style.transform = 'scale(0.7)';
+                } else if (island.classList.contains('pos-right') && island.classList.contains('size-medium')) {
+                    island.style.transform = 'scale(0.85)';
+                } else if (island.classList.contains('pos-right') && island.classList.contains('size-large')) {
+                    island.style.transform = 'scale(1)';
+                }
+                if (island.classList.contains('pos-left') && island.classList.contains('size-small')) {
+                    island.style.transform = 'scale(0.7)';
+                } else if (island.classList.contains('pos-left') && island.classList.contains('size-medium')) {
+                    island.style.transform = 'scale(0.85)';
+                } else if (island.classList.contains('pos-left') && island.classList.contains('size-large')) {
+                    island.style.transform = 'scale(1)';
+                }
+                if (island.classList.contains('pos-bottom') && island.classList.contains('size-small')) {
+                    island.style.transform = 'translateX(-50%) scale(0.7)';
+                } else if (island.classList.contains('pos-bottom') && island.classList.contains('size-medium')) {
+                    island.style.transform = 'translateX(-50%) scale(0.85)';
+                } else if (island.classList.contains('pos-bottom') && island.classList.contains('size-large')) {
+                    island.style.transform = 'translateX(-50%) scale(1)';
+                }
+            }
+
+            const fusionObserver = new MutationObserver(() => { updateIslandPosition(); });
+            const fusionPercentEl = document.getElementById('fusionPercent');
+            if (fusionPercentEl) {
+                fusionObserver.observe(fusionPercentEl, { childList: true, characterData: true, subtree: true });
+            }
+            setInterval(updateIslandPosition, 2000);
+
+            setTimeout(() => {
+                island.classList.add('show');
+                setTimeout(updateIslandPosition, 500);
+            }, 1600);
+
+            function updateTime() {
+                const now = new Date();
+                islandTime.textContent =
+                    `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+            }
+            updateTime();
+            setInterval(updateTime, 1000);
+
+            const blessings = [
+                '✦ 愿你今日明朗 ✦', '✦ 星辰大海 永不止步 ✦', '✦ 向下扎根 向上生长 ✦',
+                '✦ 保持热爱 奔赴山海 ✦', '✦ 万物皆有裂痕 ✦', '✦ 心如大海 广阔无垠 ✦',
+                '✦ 点燃心中的火焰 ✦', '✦ 风起时 万物生 ✦', '✦ 月亮不睡 我不睡 ✦',
+                '✦ 太阳照常升起 ✦'
+            ];
+            let bIdx = 0;
+            setInterval(() => {
+                bIdx = (bIdx + 1) % blessings.length;
+                islandBlessing.textContent = blessings[bIdx];
+                islandBlessing.classList.remove('slide-in');
+                islandBlessing.classList.add('slide-out');
+                setTimeout(() => {
+                    islandBlessing.classList.remove('slide-out');
+                    islandBlessing.classList.add('slide-in');
+                }, 400);
+            }, 5000);
+
+            const emojis = ['🌱', '🧬', '🌍', '⛰️', '🌿', '🌊', '🌤️', '🌟', '💫', '🌈', '🔥', '🍃', '🌙', '☀️'];
+            let eIdx = 0;
+            setInterval(() => {
+                eIdx = (eIdx + 1) % emojis.length;
+                islandEmoji.textContent = emojis[eIdx];
+                islandEmoji.style.transform = 'scale(1.2) rotate(15deg)';
+                setTimeout(() => { islandEmoji.style.transform = 'scale(1) rotate(0deg)'; }, 300);
+            }, 8000);
+
+            const weathers = ['☀️', '🌤️', '⛅', '🌥️', '☁️', '🌦️', '🌧️', '⛈️', '🌨️', '🌈'];
+            let wIdx = 0;
+            setInterval(() => {
+                wIdx = (wIdx + 1) % weathers.length;
+                const t = 12 + Math.floor(Math.random() * 20);
+                islandWeather.innerHTML = `${weathers[wIdx]} <span class="temp">${t}°</span>`;
+            }, 30000);
+
+            function incrementCounter() {
+                clickCount++;
+                clickCounter.textContent = clickCount;
+                clickCounter.style.transform = 'scale(1.2)';
+                setTimeout(() => { clickCounter.style.transform = 'scale(1)'; }, 250);
+            }
+
+            island.addEventListener('click', function(e) {
+                const rect = island.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                const colors = ['#e8dcc0', '#f0ece0', '#d4c8a8', '#ffd93d', '#4d96ff'];
+
+                for (let i = 0; i < 25; i++) {
+                    const p = document.createElement('div');
+                    p.className = 'island-particle';
+                    const size = 3 + Math.random() * 6;
+                    const angle = Math.random() * Math.PI * 2;
+                    const dist = 40 + Math.random() * 100;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    p.style.cssText =
+                        `width:${size}px;height:${size}px;left:${cx}px;top:${cy}px;background:${color};box-shadow:0 0 ${size*2}px ${color};--tx:${Math.cos(angle)*dist}px;--ty:${Math.sin(angle)*dist - 30}px;animation-duration:${0.6+Math.random()*0.4}s;border-radius:${Math.random()>0.5?'50%':'2px'};`;
+                    document.body.appendChild(p);
+                    setTimeout(() => p.remove(), 1200);
+                }
+
+                const bgClasses = ['bg-shift', 'bg-shift2', 'bg-shift3'];
+                const currentBg = document.body.className.split(' ').filter(c => c.startsWith('bg-'));
+                let nextIdx = 0;
+                if (currentBg.length > 0) {
+                    const idx = bgClasses.indexOf(currentBg[0]);
+                    nextIdx = (idx + 1) % bgClasses.length;
+                }
+                document.body.classList.remove('bg-shift', 'bg-shift2', 'bg-shift3');
+                setTimeout(() => { document.body.classList.add(bgClasses[nextIdx]); }, 100);
+
+                island.style.background = 'rgba(220,200,180,0.12)';
+                island.style.borderColor = 'rgba(220,200,180,0.2)';
+                setTimeout(() => {
+                    island.style.background = 'rgba(20,28,48,0.8)';
+                    island.style.borderColor = 'rgba(220,200,180,0.15)';
+                }, 300);
+
+                const emojiBurst = ['✦', '✧', '◆', '◈', '☆'];
+                islandEmoji.textContent = emojiBurst[Math.floor(Math.random() * emojiBurst.length)];
+                islandEmoji.style.transform = 'scale(1.4)';
+                setTimeout(() => { islandEmoji.style.transform = 'scale(1)'; }, 400);
+                incrementCounter();
+            });
+
+            // ============================================================
+            // 6. 融合度
+            // ============================================================
+            const fusionProgress = document.getElementById('fusionProgress');
+            const fusionFill = document.getElementById('fusionFill');
+            const fusionPercent = document.getElementById('fusionPercent');
+            let fusionValue = 0,
+                fusionTarget = 0;
+
+            function updateFusion() {
+                const scrollY = window.scrollY;
+                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollProgress = maxScroll > 0 ? Math.min(scrollY / maxScroll, 1) : 0;
+                const timeFactor = Math.min((Date.now() - 1500) / 60000, 0.3);
+                fusionTarget = Math.min(scrollProgress * 0.7 + timeFactor * 0.3, 1);
+                fusionValue += (fusionTarget - fusionValue) * 0.04;
+                const pct = Math.round(fusionValue * 100);
+                fusionFill.style.width = pct + '%';
+                fusionPercent.textContent = pct + '%';
+                requestAnimationFrame(updateFusion);
+            }
+            setTimeout(() => { fusionProgress.classList.add('show'); }, 2200);
+
+            // ============================================================
+            // 7. 时间轴
+            // ============================================================
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            let tlShown = false;
+
+            function checkTimeline() {
+                const rect = document.getElementById('timelinePlate').getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8 && !tlShown) {
+                    tlShown = true;
+                    timelineItems.forEach((item, i) => {
+                        setTimeout(() => { item.classList.add('show'); }, i * 250 + 150);
+                        setTimeout(() => { item.classList.add('active'); }, i * 250 + 250);
+                    });
+                }
+            }
+            window.addEventListener('scroll', checkTimeline, { passive: true });
+            setTimeout(checkTimeline, 800);
+
+            // ============================================================
+            // 8. 冷知识
+            // ============================================================
+            const triviaData = [
+                '🐧 帝企鹅是唯一在南极冬季繁殖的企鹅，雄企鹅在极夜中孵化蛋长达65天。',
+                '🌿 南极有一种苔藓，每100年才生长1厘米，是地球上生长最慢的植物之一。',
+                '🧬 人类与芝麻共享约60%的基因，我们都是碳基生命的表亲。',
+                '🧊 南极冰盖储存了全球约70%的淡水，如果全部融化，海平面将上升约60米。',
+                '🌍 地球上的氧气约50%来自海洋中的浮游植物，而不是森林。',
+                '🐠 深海热泉口的生物不依靠阳光，而是依靠化学合成作用生存。',
+                '🌱 一粒芝麻可以长出超过10万粒种子，繁殖力惊人。',
+                '🧬 孟德尔用豌豆实验发现遗传定律，而芝麻是更好的经济作物研究对象。',
+                '⛰️ 地球上海拔最高的山峰是珠穆朗玛峰，但最长的山脉是安第斯山脉。',
+                '🌊 马里亚纳海沟深约11000米，比珠穆朗玛峰的高度还要深。',
+                '🌤️ 地球大气层最外层温度可达1200°C，但感觉不到热因为空气极其稀薄。',
+                '🧊 南极洲是地球上最干燥的大陆，有些区域比撒哈拉沙漠还干燥。'
+            ];
+            let triviaIndex = 0;
+            const triviaContent = document.getElementById('triviaContent');
+            const triviaRefresh = document.getElementById('triviaRefresh');
+            const triviaPlate = document.getElementById('triviaPlate');
+
+            function showTrivia(index) {
+                const text = triviaData[index % triviaData.length];
+                triviaContent.classList.remove('fade-in');
+                triviaContent.classList.add('fade-out');
+                setTimeout(() => {
+                    triviaContent.textContent = text;
+                    triviaContent.classList.remove('fade-out');
+                    triviaContent.classList.add('fade-in');
+                }, 300);
+            }
+
+            triviaRefresh.addEventListener('click', (e) => {
+                e.stopPropagation();
+                triviaIndex = (triviaIndex + 1) % triviaData.length;
+                showTrivia(triviaIndex);
+                playClickSound(0.1);
+            });
+
+            triviaPlate.addEventListener('click', function(e) {
+                if (e.target.closest('.trivia-refresh')) return;
+                const quizPopup = document.getElementById('quizPopup');
+                document.getElementById('quizQuestion').textContent = triviaContent.textContent;
+                document.getElementById('quizOptions').innerHTML = '';
+                document.getElementById('quizResult').innerHTML =
+                    '<div class="quiz-result" style="opacity:0.4;font-size:0.7rem;">✦ 点击关闭继续探索 ✦</div>';
+                document.querySelector('#quizPopup .popup-title').textContent = '✦ 冷知识 ✦';
+                quizPopup.classList.add('show');
+            });
+            setTimeout(() => { showTrivia(0); }, 1800);
+
+            // ============================================================
+            // 9. 音效
+            // ============================================================
+            function playClickSound(volume) {
+                try {
+                    const ctx = new(window.AudioContext || window.webkitAudioContext)();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.frequency.value = 400 + Math.random() * 200;
+                    osc.type = 'sine';
+                    gain.gain.value = volume || 0.04;
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.07);
+                    osc.start(ctx.currentTime);
+                    osc.stop(ctx.currentTime + 0.07);
+                } catch (e) { /* silent */ }
+            }
+
+            // ============================================================
+            // 10. 板块点击
+            // ============================================================
+            const plates = document.querySelectorAll('.plate');
+            plates.forEach(plate => {
+                plate.addEventListener('click', function(e) {
+                    if (e.target.closest('.trivia-refresh')) return;
+                    plates.forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
+                    clearTimeout(this._highlightTimer);
+                    this._highlightTimer = setTimeout(() => { this.classList.remove('active'); }, 2500);
+                    playClickSound(0.04);
+                    incrementCounter();
+                });
+            });
+
+            plates.forEach(plate => {
+                let pressTimer = null;
+                plate.addEventListener('touchstart', function(e) {
+                    pressTimer = setTimeout(() => {
+                        this.classList.add('pressed');
+                        if (navigator.vibrate) navigator.vibrate(6);
+                    }, 200);
+                }, { passive: true });
+                plate.addEventListener('touchend', function() {
+                    clearTimeout(pressTimer);
+                    this.classList.remove('pressed');
+                }, { passive: true });
+                plate.addEventListener('touchmove', function() {
+                    clearTimeout(pressTimer);
+                    this.classList.remove('pressed');
+                }, { passive: true });
+                plate.addEventListener('mousedown', function() {
+                    pressTimer = setTimeout(() => { this.classList.add('pressed'); }, 200);
+                });
+                plate.addEventListener('mouseup', function() {
+                    clearTimeout(pressTimer);
+                    this.classList.remove('pressed');
+                });
+                plate.addEventListener('mouseleave', function() {
+                    clearTimeout(pressTimer);
+                    this.classList.remove('pressed');
+                });
+            });
+
+            // ============================================================
+            // 11. 弹出层
+            // ============================================================
+            const popupMap = {
+                geoPlate: 'geoPopup',
+                bioPlate: 'bioPopup',
+                mountainPlate: 'mountainPopup',
+                ecoPlate: 'ecoPopup',
+                oceanPlate: 'oceanPopup',
+                climatePlate: 'climatePopup'
+            };
+
+            Object.keys(popupMap).forEach(id => {
+                const trigger = document.getElementById(id);
+                if (!trigger) return;
+                const popup = document.getElementById(popupMap[id]);
+                if (!popup) return;
+                trigger.addEventListener('click', function(e) {
+                    if (e.target.closest('.trivia-refresh')) return;
+                    popup.classList.add('show');
+                    playClickSound(0.03);
+                });
+            });
+
+            document.querySelectorAll('.popup-close').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const popup = this.closest('.popup');
+                    if (popup) popup.classList.remove('show');
+                });
+            });
+            document.querySelectorAll('.popup').forEach(popup => {
+                popup.addEventListener('click', function(e) {
+                    if (e.target === this) this.classList.remove('show');
+                });
+            });
+
+            // ============================================================
+            // 12. 测验
+            // ============================================================
+            const quizData = [
+                { q: '孟德尔遗传定律中，F₂代性状分离比是多少？', options: ['1:1', '2:1', '3:1', '4:1'], correct: 2 },
+                { q: '南极圈大约在南纬多少度？', options: ['60°S', '66.5°S', '70°S', '75°S'], correct: 1 },
+                { q: '乔治王岛位于南极圈内还是外？', options: ['圈内', '圈外', '刚好在圈上', '不确定'], correct: 1 },
+                { q: '地球上最干燥的大陆是？', options: ['非洲', '澳大利亚', '南极洲', '亚洲'], correct: 2 },
+                { q: '海洋覆盖地球多少比例的面积？', options: ['61%', '71%', '81%', '91%'], correct: 1 }
+            ];
+            let quizIndex = 0,
+                quizAnswered = false;
+            const quizPopup = document.getElementById('quizPopup');
+            const quizQuestion = document.getElementById('quizQuestion');
+            const quizOptions = document.getElementById('quizOptions');
+            const quizResult = document.getElementById('quizResult');
+
+            document.getElementById('ecoPlate').addEventListener('click', function(e) {
+                if (e.target.closest('.trivia-refresh')) return;
+                quizIndex = Math.floor(Math.random() * quizData.length);
+                showQuiz(quizIndex);
+                quizPopup.classList.add('show');
+                playClickSound(0.03);
+            });
+
+            function showQuiz(index) {
+                const data = quizData[index];
+                if (!data) return;
+                quizAnswered = false;
+                quizQuestion.textContent = data.q;
+                quizOptions.innerHTML = '';
+                quizResult.innerHTML = '';
+                data.options.forEach((opt, i) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'quiz-option';
+                    btn.textContent = opt;
+                    btn.dataset.index = i;
+                    btn.addEventListener('click', function() {
+                        if (quizAnswered) return;
+                        const isCorrect = i === data.correct;
+                        this.classList.add(isCorrect ? 'correct' : 'wrong');
+                        if (isCorrect) {
+                            quizResult.innerHTML =
+                                '<div class="quiz-result"><span class="celebrate">✦</span> 回答正确！<br><span style="opacity:0.4;font-size:0.65rem;">知识+1</span></div>';
+                            for (let p = 0; p < 15; p++) {
+                                const ep = document.createElement('div');
+                                ep.className = 'island-particle';
+                                const sz = 3 + Math.random() * 5;
+                                const ang = Math.random() * Math.PI * 2;
+                                const dist = 40 + Math.random() * 80;
+                                const clr = ['#e8dcc0', '#f0ece0', '#ffd93d', '#4d96ff'][Math.floor(Math
+                                    .random() * 4)];
+                                const rect = quizPopup.getBoundingClientRect();
+                                ep.style.cssText =
+                                    `width:${sz}px;height:${sz}px;left:${rect.left+rect.width/2}px;top:${rect.top+rect.height/2}px;background:${clr};box-shadow:0 0 ${sz*2}px ${clr};--tx:${Math.cos(ang)*dist}px;--ty:${Math.sin(ang)*dist-20}px;animation-duration:${0.5+Math.random()*0.3}s;border-radius:50%;`;
+                                document.body.appendChild(ep);
+                                setTimeout(() => ep.remove(), 900);
+                            }
+                            playClickSound(0.06);
+                        } else {
+                            quizResult.innerHTML =
+                                `<div class="quiz-result"><span style="opacity:0.4;">再想想… 正确答案是 <strong style="color:#e8dcc0;">${data.options[data.correct]}</strong></span></div>`;
+                        }
+                        quizAnswered = true;
+                        document.querySelectorAll('.quiz-option').forEach(b => b.classList.add('disabled'));
+                    });
+                    quizOptions.appendChild(btn);
+                });
+            }
+
+            // ============================================================
+            // 13. DNA
+            // ============================================================
+            const dna = document.getElementById('dnaContainer');
+            for (let i = 0; i < 24; i++) {
+                const d = document.createElement('span');
+                d.className = 'dot';
+                const a = i * 0.38;
+                d.style.cssText = `left:${60+Math.sin(a)*24}px;top:${i*7}px;animation-delay:${i*0.07}s`;
+                dna.appendChild(d);
+            }
+
+            // ============================================================
+            // 14. 板块滚动
+            // ============================================================
+            const plateEls = document.querySelectorAll('.plate');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
+            plateEls.forEach(p => observer.observe(p));
+            setTimeout(() => {
+                plateEls.forEach(p => {
+                    if (p.getBoundingClientRect().top < window.innerHeight * 0.85) {
+                        p.classList.add('visible');
+                    }
+                });
+            }, 100);
+
+            // ============================================================
+            // 15. 图片轮换
+            // ============================================================
+            const imgConfigs = [
+                { id: 'geoImg', counterId: 'geoCounter', seed: 'antarctica', total: 8 },
+                { id: 'bioImg', counterId: 'bioCounter', seed: 'genetics', total: 8 },
+                { id: 'mountainImg', counterId: 'mountainCounter', seed: 'mountain', total: 8 },
+                { id: 'ecoImg', counterId: 'ecoCounter', seed: 'ecosystem', total: 8 },
+                { id: 'oceanImg', counterId: 'oceanCounter', seed: 'ocean', total: 8 },
+                { id: 'climateImg', counterId: 'climateCounter', seed: 'climate', total: 8 }
+            ];
+            let imgIdx = {};
+
+            function getUrl(seed, idx) { return `https://picsum.photos/seed/${seed}${idx}/400/225`; }
+
+            function rotateImgs() {
+                imgConfigs.forEach(config => {
+                    const c = document.getElementById(config.id);
+                    if (!c) return;
+                    const img = c.querySelector('img');
+                    const counter = document.getElementById(config.counterId);
+                    if (!img) return;
+                    if (!imgIdx[config.id]) imgIdx[config.id] = 1;
+                    else imgIdx[config.id] = (imgIdx[config.id] % config.total) + 1;
+                    const idx = imgIdx[config.id];
+                    const url = getUrl(config.seed, idx);
+                    img.classList.add('fade');
+                    setTimeout(() => {
+                        img.src = url;
+                        if (counter) counter.textContent = `${idx}/${config.total}`;
+                        setTimeout(() => img.classList.remove('fade'), 80);
+                    }, 300);
+                });
+            }
+            imgConfigs.forEach(config => {
+                imgIdx[config.id] = 1;
+                const counter = document.getElementById(config.counterId);
+                if (counter) counter.textContent = `1/${config.total}`;
+            });
+            setInterval(rotateImgs, 6000);
+
+            // ============================================================
+            // 16. 启动
+            // ============================================================
+            updateFusion();
+            setTimeout(updateIslandPosition, 2500);
+
+            console.log('✦ 生地 · 融合 已加载（亮色版） ✦');
+            console.log('✦ 灵动岛轨迹: 居中 → 右下(30-35%) → 左上(35-60%) → 底部(>60%) ✦');
+
+        })();
+    </script>
+</body>
+</html>
